@@ -1,0 +1,4 @@
+1，修改mysql的root用户的密码
+MySQL在8.0.11（社区版本）和5.7（正常版本）后，不能再使用 set password for 用户名@localhost = password('新密码');  这样的样式去修改密码了。
+官方建议使用 ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass';来修改密码。
+2，
