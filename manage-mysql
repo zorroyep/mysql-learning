@@ -1,4 +1,28 @@
 1，修改mysql的root用户的密码
 MySQL在8.0.11（社区版本）和5.7（正常版本）后，不能再使用 set password for 用户名@localhost = password('新密码');  这样的样式去修改密码了。
 官方建议使用 ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass';来修改密码。
-2，
+2，windows平台启动和关闭mysql
+首先进行mysql安装目录的bin目录，然后输入：mysqld --console
+关闭命令是：mysqladmin -u root shutdown
+3，linux平台启动和关闭mysql
+首先，我们先通过 ps -ef |grep mysqld 命令来查看Mysql服务器是否启动
+如果Mysql已经启动，以上命令将输入mysql进程列表，如果mysql未启动，你可以使用以下命令来启动mysql服务器：
+cd /usr/bin
+./mysqld_safe &
+如果你想关闭目前运行的mysql服务器，你可以执行以下命令：
+cd /usr/bin
+./mysqladmin -u root -p shutdown
+按照提示输入密码即可。
+
+4，添加Mysql用户
+一般只用在mysql数据库（自带的数据库中有一张名为mysql的表）中的user表中添加新用户即可。
+首先使用root用户登陆到mysql数据库中
+mysql -u root -p
+Enter password:*******
+mysql>use mysql;
+Database changed
+
+不建议使用insert user表中方式来创建新用户，一是不安全，再一个有的版本会报错
+
+正确的添加用户方法：
+mysql>grant all privileges on 
