@@ -23,6 +23,29 @@ mysql>use mysql;
 Database changed
 
 不建议使用insert user表中方式来创建新用户，一是不安全，再一个有的版本会报错
-
+在mysql8.0中创建用户和授权和之前不太一样了，mysql8.0需要先创建用户和设置密码，然后才授权。
 正确的添加用户方法：
-mysql>grant all privileges on 
+#先创建一个用户
+mysql>create user 'guest'@'localhost' identified by 'guest';
+#再进行授权
+mysql>grant all privileges on student.* to 'guest'@'localhost' with grant option;
+#刷新权限 
+mysql>flush privileges;
+
+5，忘记MYSQL的root用户密码
+windows平台：
+注意使用管理员模式的CMD。
+对于8.0以前的版本，可以使用mysqld --skip-grant-tables来以安全模式启动；
+对于8.0以后的版本，需要使用mysqld --console --skip-grant-tables --shared-memory命令来启动安全模式；
+启动安全模式后，我们再另外开个CMD窗口，直接使用无密码进行mysql数据库。
+mysql -u root
+mysql>
+
+然后通过修改mysql库的user表的方式来修改管理员密码
+mysql>use mysql
+mysql>update user set password=password("new_password") where user="root";
+flush privileges;
+exit;
+
+最后关闭myslqd进程即可。
+
