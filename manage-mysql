@@ -43,9 +43,10 @@ mysql>
 
 然后通过修改mysql库的user表的方式来修改管理员密码
 mysql>use mysql
-mysql>update user set password=password("new_password") where user="root";
+mysql>update mysql.user set authentication_string=md5("123") where user="root";
 flush privileges;
 exit;
-
+注：在mysql8.0和5.7以后的版本，user表中的password字段已经改为了authentication_string，加密方法password()改为了md5（）。
+如果发现使用原来的命令update mysql.user set password=password("123") where user="root"报错，请进行修改。
 最后关闭myslqd进程即可。
-
+以后再登陆就能使用新密码登陆了。
