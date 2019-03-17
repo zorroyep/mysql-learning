@@ -10,3 +10,4 @@ ROOT密码重置
 增加用户：
 create user 用户名 identified by [passowrd] 密码（字符串）
 	
+	
