@@ -2,12 +2,85 @@ ROOT密码重置
 1，停止MySQL服务：
 2，以安全模式启动Mysql
 	[linux] /usr/bin/mysql/bin/safe_mysqld --skip-grant-tables &
-	[windows] mysqld --skip-grant-tables
+	[windows] mysqld --skip-grant-tables --shared-memory --console
 3，以无密码进入数据库后，选择mysql库：use mysql;
-4，修改root密码：
+4，修改root密码：update mysql.user set authentication_string='' where user='root';
 5，刷新权限：flush privileges;
 
 增加用户：
-create user 用户名 identified by [passowrd] 密码（字符串）
-	
-	
+1，创建用户：create user 'guest'@'localhost' identified by 'guest';
+            必须拥有mysql数据库的全局create user权限或者拥有insert 权限的用户才能操作
+            该命令只能创建用户，不能赋予权限
+            用户名，注意引号：如'user_name'@'192.168.1.1'
+            密码也需要引号，纯数字密码也要加引号
+            
+2，给刚才创建的用户授权：grant all privileges on 库名.表名 to 'guest'@'localhost' with grant option;
+3，刷新权限：flush privileges;
+
+重命名用户：
+rename user old_user to new_user
+
+设置密码：
+set password='密码' --为当前用户设置密码
+set password for 用户名='密码' --为指定用户设置密码，用户名记得用'用户名'@'主机名'的形式来指定
+
+删除用户
+drop user 用户名
+
+分配权限/添加用户
+grant 权限列表 on 表名 to 用户名 [identified by [password]'password']
+    all privileges 表示所有权限
+    *.* 表示所有库的所有表
+    库名.表名 表示某库下面的某表
+    例子：grant all privileges on 'students.*' to 'guest'@'localhost' identified by 'guest123';
+
+查看权限
+show grants for 用户名
+查看当前用户权限
+show grants;或show grants for current_user;或show grants for current_user();
+
+撤销权限
+revoke 权限列表 on 表名 from 用户名
+撤销所有权限
+revoke all privilesg,grant option from 用户名
+权限层级：要使用grant或revoke，必须拥有grant option权限，并且必须你正在授予或撤销的权限。
+全局层级：全局权限适用于一个给定服务器中所有数据库，mysql.user
+grant all on *.*和revoke all on *.*只授予和撤销全局权限
+数据库层：数据库权限适用于一个给定数据库的所有目标，mysql.db,mysql.host
+grant all on db_name.*和revoke all on db_name.*只授予和撤销数据库权限
+表层级：表权限适用于一个给定表听所有列，mysql.tables_priv
+grant all on db_name.tbl_name和revoke all on db_name.tbl_name只授予和撤销表权限
+列层级：列权限适用于一个给定表中的单一列，mysql.columns_priv
+当使用revoke时，必须指定与被授权列相同的列
+权限列表：
+all [privileges] 设置除grant option之外的所有简单权限
+alter --允许使用alter table
+alter routine --更改或取消已存储的子程序
+create --允许使用create table
+create routine --创建已存储的子程序
+create temporary tables --允许使用create temporary table
+create user --允许使用create user,drop user,rename user和revoke all privileges
+create view --允许使用create view
+delete --允许使用delete
+drop --允许使用drop table
+execute --允许用户运行已存储的子程序
+file --允许使用select..into outfile和load data infile
+index --允许使用create index和drop index
+insert --允许使用insert
+lock tables --允许对你拥有select权限的表使用lock tables
+process --允许使用show full processlist
+references --未被实施
+reload --允许使用Flush
+replication client --允许用户询问从属服务器或主服务器的地址
+replication slave --用于复制从属服务器（从主服务器中读取二进制日志事件）
+select --允许 使用select
+show databases --允许使用显示所有数据库
+show view --允许使用show create view
+shutdown --允许使用mysqladmin shutdown
+super --允许 使用change master,kill,purge master logs和set  global语句，
+        mysqladmin debug命令；允许你连接（一次），即使已达到max_connections
+update --允许使用update
+usage --"无权限"的同义词
+grant option --允许授予权限
+
+
