@@ -1,0 +1,12 @@
+ROOT密码重置
+1，停止MySQL服务：
+2，以安全模式启动Mysql
+	[linux] /usr/bin/mysql/bin/safe_mysqld --skip-grant-tables &
+	[windows] mysqld --skip-grant-tables
+3，以无密码进入数据库后，选择mysql库：use mysql;
+4，修改root密码：
+5，刷新权限：flush privileges;
+
+增加用户：
+create user 用户名 identified by [passowrd] 密码（字符串）
+	
