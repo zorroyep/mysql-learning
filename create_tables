@@ -1,2 +1,66 @@
 1，使用通用SQL语言创建表时，注意，表名，字段名要加上反引号``，如果使用普通引号会报错，无法创建成功。
 2，使用mysql命令窗口创建时，可以不用加任何引号。
+3，创建数据表
+  create table 表名（
+        列名 类型 是否可以为空，
+        列名 类型 是否可以为空
+   )engine=innodb default charset=utf8;
+   
+4，设置是否为空
+not null --不可为空
+null --可空
+
+5，设置默认值
+创建列时可以指定默认值，当插入数据时如果未启动设置，则自动添加默认值
+create table tb1(
+    nid int not null default 2,
+    num int not null
+    )
+    
+6，设置自增
+如果设置某列为自增列，插入数据时无需设置此列，默认将自增（一个表中只能有一个自增列）
+create table tb1(
+      nid int not null auto_increment primary key,
+      num int null
+      )
+或
+create table tb1(
+       nid int not null auto_increment,
+       num int null,
+       index(nid)
+       )
+注意：1）对于自增列，必须是索引（含主键）；
+     2）对于自增可以设置步长和起始值
+     show session variables like 'auto_inc%';
+     set session auto_increment_increment=2;
+     set session auto_increment_offset=10;
+     
+     show global variables like 'auto_inc%';
+     set global auto_increment_increment=2;
+     set global auto_increment_offset=10;
+     
+7，设置主键
+主键是一种特殊的唯一索引，不允许有空值，如果主键使用单个列，则它的值必须唯一，如果是多列，则其组合必须唯一。
+create table tb1(
+       nid int not null auto_increment primary key,
+       num int null
+       )
+或
+create table tb1(
+      nid int not null,
+      num int not null,
+      primary key(nid,num)
+      )
+      
+8，设置外键
+外键是一个特殊的索引，只能是指定内容
+create table color(
+      nid int not null primary key,
+      name char(16) not null
+      )
+create table fruit(
+      nid int not null primary key,
+      smt char(32) null,
+      color_id int not null,
+      constraint fk_cc foreign key(color_id) references color(nid)
+      )
