@@ -7,6 +7,9 @@ ROOT密码重置
 4，修改root密码：update mysql.user set authentication_string='' where user='root';
 5，刷新权限：flush privileges;
 
+快速修改root密码：mysqladmin -u root -p password 新密码
+按照提示输入老密码后，就可以修改root密码了。
+
 增加用户：
 1，创建用户：create user 'guest'@'localhost' identified by 'guest';
             必须拥有mysql数据库的全局create user权限或者拥有insert 权限的用户才能操作
