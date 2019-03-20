@@ -33,12 +33,15 @@ mysqld --initialize --console
 说明初始密码为：hrK?s5)gYtwz ，一会我们需要修改一下这个密码。
 
 4，下面是要安装mysql：
-输入命令进行安装：mysqld install
+输入命令进行安装：mysqld install 
+注：这个操作是为了注册windows服务，如果注册不成功，可以更换一个服务名：mysqld install myqldbackup
 如完成会提示：Service successfully installed.
 
 注：如果提示：Install/Remove of the Service Denied!，说明你不是用管理员权限打开的命令提示符，改为管理员权限后，再执行安装命令。
 
 接着输入以下命令以启动服务：
-net start mysql
+net start mysql 或net start mysqlbackup
 
-注：
+注：如果以后想注销这个服务，使用sc命令进行注销：sc delete mysql  或sc delete mysqlbackup
+
+注册到windows服务的，是可以在services.msc里查询到的，也可以在里面进行管理。
