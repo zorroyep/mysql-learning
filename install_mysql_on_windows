@@ -51,3 +51,14 @@ net start mysql 或net start mysqlbackup
 
 接着介绍一下安装版本的方法
 
+
+
+说明一下卸载MYSQL的问题
+有时候卸载不干净可能会导致再次安装失败
+1，首先使用执行卸载程序，这是必要的第一步；
+2，删除几项注册表信息
+  HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\services\MySQL
+  HKEY_LOCAL_MACHINE\SYSTEM\ControlSet002\services\MySQL（没有这一项可以不管）
+  HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\services\eventlog\Application\MySQL（只要是MySQL相关的都删除掉）
+  HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\eventlog\Application\MySQL（只要是MySQL相关的都删除掉）
+3，删除C:\programdata\MYSQL文件夹，这个文件夹是默认隐藏的，需要先修改成显示隐藏文件
