@@ -45,3 +45,9 @@ net start mysql 或net start mysqlbackup
 注：如果以后想注销这个服务，使用sc命令进行注销：sc delete mysql  或sc delete mysqlbackup
 
 注册到windows服务的，是可以在services.msc里查询到的，也可以在里面进行管理。
+
+
+上面是非安装版本的方法。
+
+接着介绍一下安装版本的方法
+
