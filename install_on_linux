@@ -1,0 +1,48 @@
+linux平台安装有几种，这里先介绍一种普通源码安装的方式，来源自msyql官网。
+# Preconfiguration setup
+shell> groupadd mysql //这是添加用户组
+shell> useradd -r -g mysql -s /bin/false mysql //添加用户
+# Beginning of source-build specific instructions 开始源代码编译
+shell> tar zxvf mysql-VERSION.tar.gz //解压mysql的压缩包
+shell> cd mysql-VERSION //进入解压缩后的文件夹中
+shell> mkdir bld //创建一个临时文件夹，作为编译使用
+shell> cd bld
+shell> cmake ..
+shell> make
+shell> make install
+# End of source-build specific instructions 源代码编译结束
+# Postinstallation setup
+shell> cd /usr/local/mysql
+shell> mkdir mysql-files
+shell> chown mysql:mysql mysql-files
+shell> chmod 750 mysql-files
+shell> bin/mysqld --initialize --user=mysql
+shell> bin/mysql_ssl_rsa_setup
+shell> bin/mysqld_safe --user=mysql &
+# Next command is optional
+shell> cp support-files/mysql.server /etc/init.d/mysql.server
+
+主要步骤：
+1，预配置，主要是创建相关的用户和用户组
+2，解压压缩包，需要预先规划好相关的文件夹，并创建好
+  使用tar命令来解压你下载的xx.tar.gz文件：shell> tar zxvf mysql-VERSION.tar.gz
+  如果你的tar命令不支持z选项，就先用gzip解压：shell> gunzip < mysql-VERSION.tar.gz | tar xvf -
+  或者用cmake命令：shell> cmake -E tar zxvf mysql-VERSION.tar.gz
+  解压缩完成后，会创建一个mysql-VERSION的文件夹。
+3，配置
+  进入刚才创建的mysql-VERSION文件夹：shell> cd mysql-VERSION
+  建议在文件夹里面再新建一个文件夹，来进行编译：shell> mkdir bld，这样可以保持源文件夹的干净，进入这个bld夹：shell> cd bld
+  接着配置编译目录：shell> cmake ../mysql-src
+  为了防止以前预编译生成的缓存文件影响，请先执行下面两条命令以清除缓存：shell> make clean；shell> rm CMakeCache.txt
+4，编译
+  shell> make
+  shell> make VERBOSE=1
+  如果你的系统支持gmake，请使用gmake。
+5，安装 
+  shell> make install
+  这将会在默认目录下安装mysql（默认情况是：/usr/local/mysql），可能 需要root身份才能运行这条命令。
+  如果需要指定安装目录，需要增加一个DESTDIR参数：shell> make install DESTDIR="/opt/mysql"
+  或者生成可以在任意位置安装的安装包文件：shell> make package
+
+6，安装完成后收尾
+  这一步主要是配置Mysql的配置文件，创建核心数据库以及启动mysql服务器等等。
