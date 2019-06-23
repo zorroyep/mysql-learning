@@ -34,13 +34,16 @@ mysql>flush privileges;
 
 5，忘记MYSQL的root用户密码
 windows平台：
-注意使用管理员模式的CMD。
+注意使用管理员模式的CMD或者powershell。
+第一步：停止正在运行的mysql服务：net stop mysql
+如果Mysql服务器不是以服务的形式在运行，就通过任务管理器强制停止mysql和mysqld的进程
+第二步：以安全模式启动mysql服务器：
 对于8.0以前的版本，可以使用mysqld --skip-grant-tables来以安全模式启动；
 对于8.0以后的版本，需要使用mysqld --console --skip-grant-tables --shared-memory命令来启动安全模式；
 启动安全模式后，我们再另外开个CMD窗口，直接使用无密码进行mysql数据库。
 mysql -u root
 mysql>
-
+第三步：以root用户进入数据库后，就可以不需要密码更改root密码了
 然后通过修改mysql库的user表的方式来修改管理员密码
 mysql>use mysql
 mysql>update mysql.user set authentication_string='' where user="root";
@@ -56,3 +59,18 @@ mysql>alter user 'root'@'localhost' identified by 'new_password';
 如果发现使用原来的命令update mysql.user set password=password("123") where user="root"报错，请进行修改。
 最后关闭myslqd进程即可。
 以后再登陆就能使用新密码登陆了。
+
+Mysql官方推荐的方法：
+1，先停止Mysql的服务或者关闭Mysql的进程
+2，创建一个txt文档，内容如下，但是只有一行：
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass';
+3，保存这个txt文档，假设文档放在mysql的安装目录：mysql\bin\mysql-init.txt
+4，以管理员的权限打开cmd，使用下面的命令开启mysql服务器：
+mysqld --init-file=mysql\bin\mysql-init.txt
+5，要使服务器的输出显示在控制台窗口而不是日志文件中，请将--console 选项添加到mysqld命令。如果你使用mysql安装向导安装的Mysql，则可能需要指定
+--defaults-file选项
+mysqld   --defaults-file="C:\\ProgramData\\MySQL\\MySQL Server 8.0\\my.ini"
+         --init-file=mysql\bin\mysql-init.txt
+6，待mysql服务器成功启动后，将mysql-init.txt文件删除即可
+现在你就应该可以使用新密码以root的身份连接到mysql服务器了，停止mysql服务器并正常重启，就可以正常使用了。
+
