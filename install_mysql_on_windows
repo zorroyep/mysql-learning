@@ -1,7 +1,8 @@
 1，从官网下载压缩包
 以MySQL 的社区版本为例：MySQL Community Server 8.0.15
 
-2，下载完成后，解压某个目录，这里以D:\\为例
+2，下载完成后，解压某个目录，这里以D:\\为例，将D:\Program Files\mysql-8.0.15-winx64\bin这个目录加到系统变量中，就可以直接CMD使用mysql里面的命令了，
+如果没有加到系统变量中，需要先进入刚才解压的Mysql的文件夹里
 打开刚刚解压的文件夹：D:\\mysql-8.0.15-winx64\，在该文件夹下创建my.ini配置文件，编辑my.ini配置如下基本信息：
 [mysql]
 # 设置mysql客户端默认字符集
@@ -21,7 +22,8 @@ character-set-server=utf8
 # 创建新表时将使用的默认存储引擎
 default-storage-engine=INNODB
 
-3，接下来以管理员身份打开CMD命令行，并切换到刚才解压的mysql目录，然后 初始化数据库：
+3，接下来以管理员身份打开CMD命令行，并切换到刚才解压的mysql目录里的bin目录才能进行以下操作，
+初始化mysql
 mysqld --initialize --console
 或者使用指定的配置文件来初始化：
 mysqld  --defaults-file="D:\Program Files\mysql-8.0.15-winx64\my.ini"  --initialize  --console
@@ -29,28 +31,30 @@ mysqld  --defaults-file="D:\Program Files\mysql-8.0.15-winx64\my.ini"  --initial
 [ERROR] [MY-000067] [Server] unknown variable 'defaults-file=D:\Program'.
 
 执行完成后，会输入root用户的初始默认 密码，如：
-2019-03-11T13:11:48.572231Z 0 [System] [MY-013169] [Server] D:\Program Files\mysql-8.0.15-winx64\bin\mysqld.exe (mysqld 8.0.15) initializing of server in progress as process 16380
-2019-03-11T13:11:48.809098Z 0 [Warning] [MY-013242] [Server] --character-set-server: 'utf8' is currently an alias for the character set UTF8MB3, but will be an alias for UTF8MB4 in a future release. Please consider using UTF8MB4 in order to be unambiguous.
-2019-03-11T13:12:12.044983Z 5 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: hrK?s5)gYtwz
-2019-03-11T13:12:20.475660Z 0 [System] [MY-013170] [Server] D:\Program Files\mysql-8.0.15-winx64\bin\mysqld.exe (mysqld 8.0.15) initializing of server has completed
 
-注意上面输出的信息中第三行：A temporary password is generated for root@localhost: hrK?s5)gYtwz
-说明初始密码为：hrK?s5)gYtwz ，一会我们需要修改一下这个密码。
+C:\WINDOWS\system32>mysqld --defaults-file="D:\Program Files\mysql-8.0.15-winx64\my.ini" --initialize --console
+2019-06-23T14:41:55.665229Z 0 [System] [MY-013169] [Server] D:\Program Files\mysql-8.0.15-winx64\bin\mysqld.exe (mysqld 8.0.15) initializing of server in progress as process 19048
+2019-06-23T14:42:21.008387Z 5 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: UkaCT=sk6dgo
+2019-06-23T14:42:30.669048Z 0 [System] [MY-013170] [Server] D:\Program Files\mysql-8.0.15-winx64\bin\mysqld.exe (mysqld 8.0.15) initializing of server has completed
+
+注意上面输出的信息中第三行：A temporary password is generated for root@localhost: UkaCT=sk6dgo
+说明初始密码为：UkaCT=sk6dgo ，一会我们需要修改一下这个密码。
 
 4，下面是要安装mysql：
 输入命令进行安装：mysqld --install 
-注：这个操作是为了注册windows服务，如果注册不成功，可以更换一个服务名：mysqld --install myqldbackup
+注：这个操作是为了注册windows服务，如果注册不成功，可以更换一个服务名：mysqld --install mysql8 --defaults-file="D:\Program Files\mysql-8.0.15-winx64\my.ini"
 如完成会提示：Service successfully installed.
-
+注意：当--install参数与--defaults-file参数一块使用时，需要--install参数放在前面
 注：如果提示：Install/Remove of the Service Denied!，说明你不是用管理员权限打开的命令提示符，改为管理员权限后，再执行安装命令。
 
 接着输入以下命令以启动服务：
-net start mysql 或net start mysqlbackup
+net start mysql 或net start mysql8
 
-注：如果以后想注销这个服务，使用sc命令进行注销：sc delete mysql  或sc delete mysqlbackup
+注：如果以后想注销这个服务，使用sc命令进行注销：sc delete mysql  或sc delete mysql8
 
 注册到windows服务的，是可以在services.msc里查询到的，也可以在里面进行管理。
 
+5，到此就安装完成了，可以使用mysql的客户端连接mysql服务器了。
 
 上面是非安装版本的方法。
 
