@@ -23,6 +23,11 @@ default-storage-engine=INNODB
 
 3，接下来以管理员身份打开CMD命令行，并切换到刚才解压的mysql目录，然后 初始化数据库：
 mysqld --initialize --console
+或者使用指定的配置文件来初始化：
+mysqld  --defaults-file="D:\Program Files\mysql-8.0.15-winx64\my.ini"  --initialize  --console
+注意，在使用--defaults-file参数时，必须放到最前面，不然会有类似下面的这样的报错
+[ERROR] [MY-000067] [Server] unknown variable 'defaults-file=D:\Program'.
+
 执行完成后，会输入root用户的初始默认 密码，如：
 2019-03-11T13:11:48.572231Z 0 [System] [MY-013169] [Server] D:\Program Files\mysql-8.0.15-winx64\bin\mysqld.exe (mysqld 8.0.15) initializing of server in progress as process 16380
 2019-03-11T13:11:48.809098Z 0 [Warning] [MY-013242] [Server] --character-set-server: 'utf8' is currently an alias for the character set UTF8MB3, but will be an alias for UTF8MB4 in a future release. Please consider using UTF8MB4 in order to be unambiguous.
@@ -33,8 +38,8 @@ mysqld --initialize --console
 说明初始密码为：hrK?s5)gYtwz ，一会我们需要修改一下这个密码。
 
 4，下面是要安装mysql：
-输入命令进行安装：mysqld install 
-注：这个操作是为了注册windows服务，如果注册不成功，可以更换一个服务名：mysqld install myqldbackup
+输入命令进行安装：mysqld --install 
+注：这个操作是为了注册windows服务，如果注册不成功，可以更换一个服务名：mysqld --install myqldbackup
 如完成会提示：Service successfully installed.
 
 注：如果提示：Install/Remove of the Service Denied!，说明你不是用管理员权限打开的命令提示符，改为管理员权限后，再执行安装命令。
