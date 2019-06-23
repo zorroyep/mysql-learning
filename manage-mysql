@@ -67,6 +67,7 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass';
 3，保存这个txt文档，假设文档放在mysql的安装目录：mysql\bin\mysql-init.txt
 4，以管理员的权限打开cmd，使用下面的命令开启mysql服务器：
 mysqld --init-file=mysql\bin\mysql-init.txt
+注意：在windows平台中，路径中如果有空格，需要将路径使用引号包括起来，不然会报错，因此建议将Mysql放到不包含空格的路径中。
 5，要使服务器的输出显示在控制台窗口而不是日志文件中，请将--console 选项添加到mysqld命令。如果你使用mysql安装向导安装的Mysql，则可能需要指定
 --defaults-file选项
 mysqld   --defaults-file="C:\\ProgramData\\MySQL\\MySQL Server 8.0\\my.ini"
