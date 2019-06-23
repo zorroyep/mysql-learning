@@ -56,6 +56,19 @@ net start mysql 或net start mysql8
 
 5，到此就安装完成了，可以使用mysql的客户端连接mysql服务器了。
 
+注意：在win10安装Mysql8时，碰到一个问题，我使用创建的自定义的windows服务不能启动，使用命令行启动会报错：
+C:\WINDOWS\system32>net start mysql8
+发生系统错误 2。
+
+系统找不到指定的文件。
+在网上查了半天资料才找到解决办法：
+进入到 %mysql 的解压目%\bin 目录下，再执行注册服务的操作，否则注册的服务“可执行文件路径”会默认在C盘下，从而导致注册的服务的默认目录与sql文件的安装目录
+不一致，导致启动服务时报错。即使你已经将Mysql的路径加入了系统变量path中也不行。
+碰到 这种情况，可以通过注册表来修改，或者直接将服务删除，然后进入mysql的bin目录后再注册服务就没事了。
+修改注册表的话需要找到“计算机\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\mysql8”这一项，然后修改imagepath的值为你的mysqld的所在目录，
+如果有参数，参数也要写上，保存即可，不需要重启电脑即可生效。
+
+
 上面是非安装版本的方法。
 
 接着介绍一下安装版本的方法
