@@ -84,3 +84,9 @@ C:\WINDOWS\system32>net start mysql8
   HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\services\eventlog\Application\MySQL（只要是MySQL相关的都删除掉）
   HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\eventlog\Application\MySQL（只要是MySQL相关的都删除掉）
 3，删除C:\programdata\MYSQL文件夹，这个文件夹是默认隐藏的，需要先修改成显示隐藏文件
+
+
+FAQ：
+1，Q:报错：mysqld: [ERROR] Found option without preceding group in config file D:\Program Files\mysql-8.0.15-winx64\my.ini at line 1.
+mysqld: [ERROR] Fatal error in defaults handling. Program aborted!
+   A:这是因为在保存my.ini文件时没有保存为ANSI格式的，在windows平台需要改为ANSI格式的。
