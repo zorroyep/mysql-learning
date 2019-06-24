@@ -90,3 +90,10 @@ FAQ：
 1，Q:报错：mysqld: [ERROR] Found option without preceding group in config file D:\Program Files\mysql-8.0.15-winx64\my.ini at line 1.
 mysqld: [ERROR] Fatal error in defaults handling. Program aborted!
    A:这是因为在保存my.ini文件时没有保存为ANSI格式的，在windows平台需要改为ANSI格式的。
+2,Q:报错：2019-06-24T02:29:59.157247Z 0 [System] [MY-010116] [Server] D:\Program Files\mysql-8.0.15-winx64\bin\mysqld (mysqld 8.0.15) starting as process 4588
+2019-06-24T02:30:02.927822Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2019-06-24T02:30:02.952923Z 0 [ERROR] [MY-000068] [Server] unknown option '--install'.
+2019-06-24T02:30:02.952934Z 0 [Warning] [MY-010952] [Server] The privilege system failed to initialize correctly. If you have upgraded your server, make sure you're executing mysql_upgrade to correct the issue.
+2019-06-24T02:30:02.965125Z 0 [ERROR] [MY-010119] [Server] Aborting
+2019-06-24T02:30:04.579145Z 0 [System] [MY-010910] [Server] D:\Program Files\mysql-8.0.15-winx64\bin\mysqld: Shutdown complete (mysqld 8.0.15)  MySQL Community Server - GPL.
+  A:不要使用--console参数即可
