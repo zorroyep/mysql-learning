@@ -7,6 +7,7 @@
             
 2，给刚才创建的用户授权：grant all privileges on 库名.表名 to 'guest'@'localhost' with grant option;
 3，刷新权限：flush privileges;
+注：在8.0版本里，不能使用grant命令来创建用户了并添加密码，因此需要将创建用户和授权的分开了。
 
 重命名用户：
 rename user old_user to new_user
