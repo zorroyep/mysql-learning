@@ -60,8 +60,33 @@ mysql>alter user 'root'@'localhost' identified by 'new_password';
 最后关闭myslqd进程即可。
 以后再登陆就能使用新密码登陆了。
 
+linux平台
+使用root账号登陆系统
+第一步：停止正在运行mysqld服务，或者停止mysqld进程
+systemctl stop mysqld；kill [mysql_pid]
+第二步：以无密码方式启动mysqld，注意，由于mysql官方为了安全起见，在使用无密码模式时，默认会开启--skip-networking，这样会不允许以TCP/IP的方式来登陆
+mysql
+mysqld --skip-grant-tables&
+有可能会报错，这是因为你的配置文件时没有以mysql登陆，如果要以root登陆，需要加上--user=root参数
+通过这种方式开启mysql服务后，就可以以无密码登陆进去了
+第三步：不用密码登陆，并且刷新权限
+mysql -u root -p
+提示你输入密码时，直接回车即可。
+然后刷新权限
+mysql> flush privileges;
+Query OK, 0 rows affected (0.02 sec)
+第四步：修改密码
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'newpassword';
+
+mysql> alter user 'root'@'localhost' identified by '1QAZ2wsx..';
+Query OK, 0 rows affected (0.04 sec)
+注意，在8.0的版本已经不能使用简单密码了，因此需要用大小写加字符的方式建立 密码
+第五步：把刚才启动的进程终结掉，再以正常方式启动mysqld：systemctl start mysqld
+此时再登陆的时候root用户的密码就已经改成了1QAZ2wsx..
+
 Mysql官方推荐的方法：
 1，先停止Mysql的服务或者关闭Mysql的进程
+linux：systemctl stop mysqld，如果没有不是通过服务启动的，把mysqld这个进程终止即可；windows：停止mysql服务；
 2，创建一个txt文档，内容如下，但是只有一行：
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass';
 3，保存这个txt文档，假设文档放在mysql的安装目录：mysql\bin\mysql-init.txt
@@ -75,3 +100,4 @@ mysqld   --defaults-file="C:\\ProgramData\\MySQL\\MySQL Server 8.0\\my.ini"
 6，待mysql服务器成功启动后，将mysql-init.txt文件删除即可
 现在你就应该可以使用新密码以root的身份连接到mysql服务器了，停止mysql服务器并正常重启，就可以正常使用了。
 
+上面这个方法在windows平台可以正常使用，但是在Linux平台，始终无法生效。
